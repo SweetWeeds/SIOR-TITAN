@@ -1,14 +1,23 @@
 #include "sam160.h"
 
+MyMotor::MyMotor(const char* dev, speed_t baudrate=B1500000) {
+    this->p_rs485 = new RS485(dev, baudrate);
+}
+
+MyMotor::~MyMotor() {
+    this->Close();
+}
+
 /*---------------------------------------------------------------------------------------------------------------------------------------*/
 
 void MyMotor::SendByte(u8 data) {
-    rs485.Write(data, sizeof(data));
+    this->p_rs485->Write(data, sizeof(data));
 } // UART Transmit Function
 
 u8 MyMotor::GetByte(u16 timeout) {
     u8 buf;
-    rs485.Read(&buf);
+    //this->p_rs485->Read(&buf);
+    this->p_rs485->Read(&buf, sizeof(u8), timeout);
     return buf;
 } // UART Receive Function
 
@@ -857,5 +866,5 @@ u32 MyMotor::Standard_PrecisionPosRead_CMD(u8 SamId) {
 }
 
 void MyMotor::Close() {
-    this->rs485.Close();
+    this->p_rs485->Close();
 }

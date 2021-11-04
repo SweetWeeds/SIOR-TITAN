@@ -1,6 +1,11 @@
-#define TIMEOUT 0
-#define HEADER 0xFF
+#ifndef SAM_160_H
+#define SAM_160_H
+
 #include "rs485.h"
+
+#define TIMEOUT 500 // 500ms
+#define HEADER 0xFF
+
 /*--------------------data definition ------------------------------------------------------------------------------------------------*/
 typedef signed long s32; // 4 byte
 typedef signed short s16; // 2 byte
@@ -13,10 +18,12 @@ typedef unsigned char u8; // 1 byte
 /*---------------------------------------------------------------------------------------------------------------------------------------*/
 class MyMotor {
     private:
-        RS485 rs485;
+        RS485 *p_rs485 = NULL;
         void SendByte(u8 data); // UART Transmit Function
         u8 GetByte(u16 timeout); // UART Receive Function
     public:
+        MyMotor(const char* dev, speed_t baudrate);
+        ~MyMotor();
         /*--------------------Packet formation function -----------------------------------------------------------*/
         void Quick_Ctrl_CMD(u8 Data1, u8 Data2);
         void Quick_Set_Expand_CMD(u8 Data1, u8 Data2, u8 Data3, u8 Data4);
@@ -86,3 +93,5 @@ class MyMotor {
         u32 Standard_PrecisionPosRead_CMD(u8 SamId);
         void Close();
 };
+
+#endif
