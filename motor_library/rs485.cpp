@@ -35,8 +35,8 @@ void RS485::init(const char* dev, speed_t baudrate) {
     tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
     tty.c_cc[VMIN] = 0;
     // Set in/out baud rate to be 1.5Mbps
-    cfsetispeed(&tty, BAUD_RATE);
-    cfsetospeed(&tty, BAUD_RATE);
+    cfsetispeed(&tty, baudrate);
+    cfsetospeed(&tty, baudrate);
     // Save tty settings, also checking for error
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
