@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,10 +10,12 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    sam160.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    sam160.h
 
 FORMS += \
     mainwindow.ui
