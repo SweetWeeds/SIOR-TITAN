@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <QSerialPortInfo>
+#include <QFileDialog>
+#include <QDebug>
+#include <QDateTime>
 
 #include "sam160.h"
 
@@ -19,11 +22,15 @@ public:
     ~MainWindow();
 
 private slots:
+    void About();
+    void Load();
+    void Save();
+
     void on_serialConnectButton_clicked();
 
     void on_recordButton_clicked();
 
-    void on_pushButton_clicked();
+    void on_refreshButton_clicked();
 
 private:
     Ui::MainWindow *ui;

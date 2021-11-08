@@ -1,25 +1,61 @@
 #include "sam160.h"
 
-MyMotor::MyMotor(const char* dev, speed_t baudrate=B1500000) {
-    this->p_rs485 = new RS485(dev, baudrate);
+MyMotor::MyMotor(QObject *parent) : QThread(parent) {
+
 }
 
+
 MyMotor::~MyMotor() {
-    this->Close();
+    this->Disconnect();
+}
+
+
+int MyMotor::Connect(const QString dev, int baudrate) {
+    m_mutex.lock();
+    this->m_serialPort.setPortName(dev);
+    this->m_serialPort.setBaudRate(baudrate);
+    this->m_serialPort.setDataBits(QSerialPort::Data8);
+    this->m_serialPort.setParity(QSerialPort::NoParity);
+    this->m_serialPort.setStopBits(QSerialPort::OneStop);
+    this->m_serialPort.setFlowControl(QSerialPort::NoFlowControl);
+    if (!this->m_serialPort.open(QIODevice::ReadWrite)) {
+        emit error(tr("Can't open %1, error code %2").arg(dev).arg(this->m_serialPort.error()));
+        m_mutex.unlock();
+        return -1;
+    }
+    m_mutex.unlock();
+    return 0;
+}
+
+
+void MyMotor::Disconnect() {
+    m_mutex.lock();
+    this->m_serialPort.close();
+    m_mutex.unlock();
 }
 
 /*---------------------------------------------------------------------------------------------------------------------------------------*/
 
 void MyMotor::SendByte(u8 data) {
-    this->p_rs485->Write(data, sizeof(data));
+    this->m_serialPort.write((const char *)&data, sizeof(u8));
 } // UART Transmit Function
 
-u8 MyMotor::GetByte(u16 timeout) {
-    u8 buf;
-    //this->p_rs485->Read(&buf);
-    this->p_rs485->Read(&buf, sizeof(u8), timeout);
+
+u8 MyMotor::GetByte(u16 timeout=TIMEOUT) {
+    u8 buf = 0x00;
+    if (this->m_serialPort.waitForBytesWritten(timeout)) {
+        if (this->m_serialPort.read((char *)&buf, 1) == -1) {
+            emit error(tr("[ERROR] Reading error."));
+        }
+    }
     return buf;
 } // UART Receive Function
+
+void MyMotor::run() {
+    while (!this->m_quit) {
+
+    }
+}
 
 /*--------------------Define Packet formation function -----------------------*/
 /******************************************************************************/
@@ -863,8 +899,4 @@ u32 MyMotor::Standard_PrecisionPosRead_CMD(u8 SamId) {
         ResponseData |= GetByte(TIMEOUT);
     }
     return ResponseData;
-}
-
-void MyMotor::Close() {
-    this->p_rs485->Close();
 }
