@@ -47,6 +47,8 @@ void RS485::Write(u8 data, size_t size) {
     write(this->serial_port, &data, size);
 }
 
+
+// Read without timeout
 void RS485::Read(u8 *read_buf) {
     memset(read_buf, '\0', sizeof(*read_buf));
     int num_bytes = read(this->serial_port, read_buf, sizeof(*read_buf));
@@ -55,6 +57,8 @@ void RS485::Read(u8 *read_buf) {
     }
 }
 
+
+// Read with timeout
 void RS485::Read(u8 *read_buf, int buf_size, int timeout_ms) {
     int rx_len = 0;
     struct timeval timeout;
