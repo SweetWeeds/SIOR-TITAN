@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include <QMutex>
 
-#define TIMEOUT     500     // 500ms
+#define TIMEOUT     1000     // 500ms
 #define HEADER      0xFF
 
 /*--------------------data definition ------------------------------------------------------------------------------------------------*/
@@ -102,7 +102,7 @@ public:
     u16 Standard_FirmwareVersionRead_CMD(u8 SamId);
     u16 Standard_OffsetControl_CMD(u8 SamId, u8 OffsetControl);
     u16 Standard_SpecialControl_CMD(u8 SamId, u8 ControlMode, u16 WheelSpeed);
-    u16 Standard_PosControl_CMD(u8 SamId, u16 Position);
+    u16 Standard_PosControl_CMD(u8 SamId, const u16 Position);
     u32 Standard_PrecisionPosControl_CMD(u8 SamId, u32 PrecisionPosition);
     u32 Standard_PrecisionPosRead_CMD(u8 SamId);
     void Close();

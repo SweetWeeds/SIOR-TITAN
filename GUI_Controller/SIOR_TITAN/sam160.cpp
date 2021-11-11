@@ -861,7 +861,7 @@ u16 MyMotor::Standard_SpecialControl_CMD(u8 SamId, u8 ControlMode, u16 WheelSpee
 /* Input : SamId, Position */
 /* Output : Position */
 /********************************************************************************************/
-u16 MyMotor::Standard_PosControl_CMD(u8 SamId, u16 Position) {
+u16 MyMotor::Standard_PosControl_CMD(u8 SamId, const u16 Position) {
     u16 ResponseData = 0;
     if ((SamId <= 254) && (Position <= 4095)) {
         Standard_CMD(200, SamId, Position >> 7, Position & 0x7f);

@@ -32,6 +32,8 @@ private slots:
 
     void on_refreshButton_clicked();
 
+    void on_testButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     void fillPortsInfo();

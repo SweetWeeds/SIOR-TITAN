@@ -94,3 +94,15 @@ void MainWindow::Save() {
     QString file = QFileDialog::getSaveFileName(this, "Save File", filename+".json", "Files(*.json)");
     qDebug() << file;
 }
+
+void MainWindow::on_testButton_clicked() {
+    QMessageBox msgBox;
+    u8 result = 0;
+    u16 pos = (u16)ui->testSpinBox->value();
+    u16 tmp = this->mymotor.Quick_PosControl_CMD((u8)0x00, 4, pos);
+    tmp = this->mymotor.Quick_StatusRead_CMD((u8)0x00);
+    result = (u8)(tmp & 0x00FF);
+    msgBox.setText(QString("Value:%1").arg(result));
+    msgBox.exec();
+}
+
