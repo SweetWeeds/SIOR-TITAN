@@ -4,6 +4,7 @@ RQ-TITAN의 제어 SW
 ## Platform
 OS: Windows 10, Linux (Ubuntu 20.04)<br><br>
 Board: PC(x86), Raspberry Pi, Jetson Nano<br><br>
-Framework: Qt 5.12.11
+Framework: Qt 5.12.11<br><br>
+Programming Language: C++
 ## Device
 RS-485 (Default: 1.5Mbps)
