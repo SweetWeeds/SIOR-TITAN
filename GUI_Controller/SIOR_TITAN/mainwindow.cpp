@@ -13,9 +13,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(Save()));
     // Buttons
     ui->captureButton->setEnabled(false);
-    ui->continuousExecuteButton->setEnabled(false);
+    ui->batchExecuteButton->setEnabled(false);
     ui->recordButton->setEnabled(false);
     ui->singleExecuteButton->setEnabled(false);
+    // Status Bar
+    ui->statusbar->showMessage("Welcome to SIOR-TITAN Controller");
 }
 
 
@@ -23,60 +25,11 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-
-void MainWindow::on_serialConnectButton_clicked() {
-    if (this->isConnected == true) {
-        // Try disconnect
-        this->mymotor.Disconnect();
-        ui->serialConnectButton->setText("Connect");
-        ui->refreshButton->setEnabled(true);
-    } else {
-        // Try connect
-        if (this->mymotor.Connect(ui->serialComboBox->currentText(), ui->baudrateSpinBox->value()) == -1) {
-            QMessageBox msgBox;
-            msgBox.setText("[ERROR] Can't connect serial port.");
-            msgBox.exec();
-            return;
-        }
-        ui->serialConnectButton->setText("Disconnect");
-        ui->refreshButton->setEnabled(false);
-    }
-    this->isConnected = !this->isConnected;
-}
-
-
-void MainWindow::on_recordButton_clicked() {
-    if (this->isRecording == false) {
-        // Activate recording mode
-        ui->recordButton->setText("Recording Mode");
-    } else {
-        // Deactivate recording mode (activate execution mode)
-        ui->recordButton->setText("Execution Mode");
-    }
-    this->isRecording = !this->isRecording;
-}
-
-
-void MainWindow::on_refreshButton_clicked() {
-    this->refreshSerialPortList();
-}
-
-
-// Refresh Serial Ports
-void MainWindow::refreshSerialPortList() {
-    // Get serial port information
-    ui->serialComboBox->clear();
-    const auto infos = QSerialPortInfo::availablePorts();
-    for (const QSerialPortInfo &info : infos) {
-        ui->serialComboBox->addItem(info.portName());
-    }
-}
-
-
+/**** Start of Slot Functions ****/
 // Print information of program
 void MainWindow::About() {
     QMessageBox msgBox;
-    msgBox.setText("This program is made by Hankyul Kwon(SIOR, 2016) in 2021.");
+    msgBox.setText("Made by SweetWeeds");
     msgBox.exec();
 }
 
@@ -95,6 +48,35 @@ void MainWindow::Save() {
     qDebug() << file;
 }
 
+
+// Clicked Serial Connect Button
+void MainWindow::on_serialConnectButton_clicked() {
+    if (this->setSerialConnect(!this->isConnected)) {
+        QMessageBox msgBox;
+        msgBox.setText("Serial Connection Failed.");
+    }
+
+    if (this->isConnected)  setRecordMode(true);
+    else                    this->setEnableControlButtons(false);
+}
+
+
+// Clicked Record Button
+void MainWindow::on_recordButton_clicked() {
+    if (this->setRecordMode(!this->isRecording)) {
+        QMessageBox msgBox;
+        msgBox.setText("Mode change failed.");
+    }
+}
+
+
+// Clicked Serial Refresh Button
+void MainWindow::on_refreshButton_clicked() {
+    this->refreshSerialPortList();
+}
+
+
+// Clicked Test Button
 void MainWindow::on_testButton_clicked() {
     QMessageBox msgBox;
     u8 result = 0;
@@ -105,4 +87,62 @@ void MainWindow::on_testButton_clicked() {
     msgBox.setText(QString("Value:%1").arg(result));
     msgBox.exec();
 }
+/**** End of Slot Functions ****/
+
+
+/**** Start of user functions ****/
+// Refresh Serial Ports
+void MainWindow::refreshSerialPortList() {
+    // Get serial port information
+    ui->serialComboBox->clear();
+    const auto infos = QSerialPortInfo::availablePorts();
+    for (const QSerialPortInfo &info : infos) {
+        ui->serialComboBox->addItem(info.portName());
+    }
+}
+
+
+// Try to connect serial device.
+int MainWindow::setSerialConnect(bool enSerial) {
+    if (enSerial)
+        this->mymotor.Disconnect();
+    else
+        this->mymotor.Connect(ui->serialComboBox->currentText(), ui->baudrateSpinBox->value());
+
+    ui->serialConnectButton->setText(enSerial ? "Disconnect" : "Connect");
+
+    ui->recordButton->setEnabled(enSerial);
+    ui->refreshButton->setEnabled(!enSerial);
+    ui->baudrateSpinBox->setEnabled(!enSerial);
+    ui->serialComboBox->setEnabled(!enSerial);
+
+    ui->statusbar->showMessage(enSerial ? "Disconnect Complete" : QString("Connected to %1:%2").arg(ui->serialComboBox->currentText(), ui->baudrateSpinBox->value()));
+
+    if (!enSerial) this->setEnableControlButtons(false);
+
+    this->isConnected = enSerial;
+
+    return 0;
+}
+
+// Enable/Disable Control Buttons
+void MainWindow::setEnableControlButtons(bool en) {
+    ui->recordButton->setEnabled(en);
+    ui->captureButton->setEnabled(en);
+    ui->singleExecuteButton->setEnabled(en);
+    ui->batchExecuteButton->setEnabled(en);
+}
+
+// Set Record Mode
+int MainWindow::setRecordMode(bool enRecord) {
+    // Activate recording mode
+    ui->recordButton->setText(enRecord ? "Recording Mode" : "Executing Mode");
+    ui->captureButton->setEnabled(enRecord);
+    ui->singleExecuteButton->setEnabled(!enRecord);
+    ui->batchExecuteButton->setEnabled(!enRecord);
+    this->isRecording = enRecord;
+
+    return 0;
+}
+/**** End of user functions ****/
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1001</width>
-    <height>598</height>
+    <height>599</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -103,7 +103,7 @@
      <string>Capture</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="continuousExecuteButton">
+   <widget class="QPushButton" name="batchExecuteButton">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -285,7 +285,7 @@
      <x>0</x>
      <y>0</y>
      <width>1001</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSIOR_TITAN">

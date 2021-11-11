@@ -3,7 +3,9 @@
 
 #include <QMainWindow>
 #include <QSerialPortInfo>
+#include <QFile>
 #include <QFileDialog>
+
 #include <QDebug>
 #include <QDateTime>
 
@@ -25,22 +27,24 @@ private slots:
     void About();
     void Load();
     void Save();
-
     void on_serialConnectButton_clicked();
-
     void on_recordButton_clicked();
-
     void on_refreshButton_clicked();
-
     void on_testButton_clicked();
 
 private:
+    /** Variables **/
     Ui::MainWindow *ui;
-    void fillPortsInfo();
     MyMotor mymotor;
     bool isConnected = false;
     bool isRecording = false;
+
+    /** Functions **/
+    void fillPortsInfo();
     void refreshSerialPortList();
+    void setEnableControlButtons(bool en);
+    int  setRecordMode(bool enRecord=true);
+    int  setSerialConnect(bool enSerial=true);
 };
 
 #endif // MAINWINDOW_H

@@ -19,6 +19,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 
@@ -27,7 +28,7 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    QAction *actionFile;
+    QAction *actionLoad;
     QAction *actionSave;
     QAction *actionInfo;
     QWidget *centralwidget;
@@ -36,11 +37,16 @@ public:
     QPushButton *recordButton;
     QPushButton *singleExecuteButton;
     QPushButton *captureButton;
-    QPushButton *continuousExecuteButton;
+    QPushButton *batchExecuteButton;
     QLabel *humanoid_pic;
     QPushButton *serialConnectButton;
     QComboBox *serialComboBox;
     QLabel *serial_label;
+    QPushButton *refreshButton;
+    QLabel *baudrate_label;
+    QSpinBox *baudrateSpinBox;
+    QPushButton *testButton;
+    QSpinBox *testSpinBox;
     QMenuBar *menubar;
     QMenu *menuSIOR_TITAN;
     QMenu *menu;
@@ -50,14 +56,14 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(922, 610);
+        MainWindow->resize(1001, 599);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
         MainWindow->setSizePolicy(sizePolicy);
-        actionFile = new QAction(MainWindow);
-        actionFile->setObjectName(QString::fromUtf8("actionFile"));
+        actionLoad = new QAction(MainWindow);
+        actionLoad->setObjectName(QString::fromUtf8("actionLoad"));
         actionSave = new QAction(MainWindow);
         actionSave->setObjectName(QString::fromUtf8("actionSave"));
         actionInfo = new QAction(MainWindow);
@@ -76,8 +82,8 @@ public:
         QFont font;
         font.setFamily(QString::fromUtf8("\353\247\221\354\235\200 \352\263\240\353\224\225"));
         font.setPointSize(17);
-        font.setBold(true);
-        font.setWeight(75);
+        font.setBold(false);
+        font.setWeight(50);
         recordButton->setFont(font);
         singleExecuteButton = new QPushButton(centralwidget);
         singleExecuteButton->setObjectName(QString::fromUtf8("singleExecuteButton"));
@@ -87,32 +93,56 @@ public:
         captureButton->setObjectName(QString::fromUtf8("captureButton"));
         captureButton->setGeometry(QRect(470, 370, 211, 91));
         captureButton->setFont(font);
-        continuousExecuteButton = new QPushButton(centralwidget);
-        continuousExecuteButton->setObjectName(QString::fromUtf8("continuousExecuteButton"));
-        continuousExecuteButton->setGeometry(QRect(250, 470, 431, 81));
-        continuousExecuteButton->setFont(font);
+        batchExecuteButton = new QPushButton(centralwidget);
+        batchExecuteButton->setObjectName(QString::fromUtf8("batchExecuteButton"));
+        batchExecuteButton->setGeometry(QRect(250, 470, 431, 81));
+        batchExecuteButton->setFont(font);
         humanoid_pic = new QLabel(centralwidget);
         humanoid_pic->setObjectName(QString::fromUtf8("humanoid_pic"));
-        humanoid_pic->setGeometry(QRect(690, 10, 211, 351));
+        humanoid_pic->setGeometry(QRect(710, 10, 281, 281));
         serialConnectButton = new QPushButton(centralwidget);
         serialConnectButton->setObjectName(QString::fromUtf8("serialConnectButton"));
-        serialConnectButton->setGeometry(QRect(690, 410, 211, 141));
+        serialConnectButton->setGeometry(QRect(700, 410, 291, 141));
         serialConnectButton->setFont(font);
         serialComboBox = new QComboBox(centralwidget);
         serialComboBox->setObjectName(QString::fromUtf8("serialComboBox"));
-        serialComboBox->setGeometry(QRect(760, 380, 141, 21));
+        serialComboBox->setGeometry(QRect(780, 380, 141, 21));
         serial_label = new QLabel(centralwidget);
         serial_label->setObjectName(QString::fromUtf8("serial_label"));
-        serial_label->setGeometry(QRect(690, 380, 61, 16));
+        serial_label->setGeometry(QRect(700, 380, 81, 16));
         QFont font1;
         font1.setFamily(QString::fromUtf8("\353\247\221\354\235\200 \352\263\240\353\224\225"));
-        font1.setBold(true);
-        font1.setWeight(75);
+        font1.setBold(false);
+        font1.setWeight(50);
         serial_label->setFont(font1);
+        refreshButton = new QPushButton(centralwidget);
+        refreshButton->setObjectName(QString::fromUtf8("refreshButton"));
+        refreshButton->setGeometry(QRect(930, 350, 61, 51));
+        baudrate_label = new QLabel(centralwidget);
+        baudrate_label->setObjectName(QString::fromUtf8("baudrate_label"));
+        baudrate_label->setGeometry(QRect(700, 350, 81, 16));
+        baudrate_label->setFont(font1);
+        baudrateSpinBox = new QSpinBox(centralwidget);
+        baudrateSpinBox->setObjectName(QString::fromUtf8("baudrateSpinBox"));
+        baudrateSpinBox->setGeometry(QRect(780, 350, 141, 26));
+        baudrateSpinBox->setMinimum(9200);
+        baudrateSpinBox->setMaximum(3000000);
+        baudrateSpinBox->setSingleStep(1000);
+        baudrateSpinBox->setValue(1500000);
+        testButton = new QPushButton(centralwidget);
+        testButton->setObjectName(QString::fromUtf8("testButton"));
+        testButton->setGeometry(QRect(830, 310, 89, 25));
+        testSpinBox = new QSpinBox(centralwidget);
+        testSpinBox->setObjectName(QString::fromUtf8("testSpinBox"));
+        testSpinBox->setGeometry(QRect(700, 310, 121, 26));
+        testSpinBox->setMinimum(0);
+        testSpinBox->setMaximum(4095);
+        testSpinBox->setSingleStep(1000);
+        testSpinBox->setValue(100);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 922, 20));
+        menubar->setGeometry(QRect(0, 0, 1001, 20));
         menuSIOR_TITAN = new QMenu(menubar);
         menuSIOR_TITAN->setObjectName(QString::fromUtf8("menuSIOR_TITAN"));
         menu = new QMenu(menubar);
@@ -124,7 +154,7 @@ public:
 
         menubar->addAction(menuSIOR_TITAN->menuAction());
         menubar->addAction(menu->menuAction());
-        menuSIOR_TITAN->addAction(actionFile);
+        menuSIOR_TITAN->addAction(actionLoad);
         menuSIOR_TITAN->addAction(actionSave);
         menu->addAction(actionInfo);
 
@@ -135,17 +165,20 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
-        actionFile->setText(QApplication::translate("MainWindow", "Load", nullptr));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "SIOR-TITAN", nullptr));
+        actionLoad->setText(QApplication::translate("MainWindow", "Load", nullptr));
         actionSave->setText(QApplication::translate("MainWindow", "Save", nullptr));
         actionInfo->setText(QApplication::translate("MainWindow", "About", nullptr));
-        recordButton->setText(QApplication::translate("MainWindow", "\353\205\271\355\231\224 \353\252\250\353\223\234", nullptr));
-        singleExecuteButton->setText(QApplication::translate("MainWindow", "\353\213\250\354\235\274 \354\213\244\355\226\211", nullptr));
-        captureButton->setText(QApplication::translate("MainWindow", "\354\272\241\354\262\230", nullptr));
-        continuousExecuteButton->setText(QApplication::translate("MainWindow", "\354\227\260\354\206\215 \354\213\244\355\226\211", nullptr));
+        recordButton->setText(QApplication::translate("MainWindow", "Recording Mode", nullptr));
+        singleExecuteButton->setText(QApplication::translate("MainWindow", "Single Execute", nullptr));
+        captureButton->setText(QApplication::translate("MainWindow", "Capture", nullptr));
+        batchExecuteButton->setText(QApplication::translate("MainWindow", "Batch Execute", nullptr));
         humanoid_pic->setText(QString());
-        serialConnectButton->setText(QApplication::translate("MainWindow", "\354\227\260\352\262\260", nullptr));
+        serialConnectButton->setText(QApplication::translate("MainWindow", "Connect", nullptr));
         serial_label->setText(QApplication::translate("MainWindow", "Serial Dev", nullptr));
+        refreshButton->setText(QApplication::translate("MainWindow", "Refresh", nullptr));
+        baudrate_label->setText(QApplication::translate("MainWindow", "Baudrate", nullptr));
+        testButton->setText(QApplication::translate("MainWindow", "TEST", nullptr));
         menuSIOR_TITAN->setTitle(QApplication::translate("MainWindow", "File", nullptr));
         menu->setTitle(QApplication::translate("MainWindow", "Info", nullptr));
     } // retranslateUi
