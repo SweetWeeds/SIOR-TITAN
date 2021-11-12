@@ -1,21 +1,23 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "sam160.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
     // Init window
     this->refreshSerialPortList();
+
     // Connect Action Bar Signals (Menu)
     connect(ui->actionInfo, SIGNAL(triggered()), this, SLOT(About()));
     connect(ui->actionLoad, SIGNAL(triggered()), this, SLOT(Load()));
     connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(Save()));
+
     // Buttons
     ui->captureButton->setEnabled(false);
     ui->batchExecuteButton->setEnabled(false);
     ui->recordButton->setEnabled(false);
     ui->singleExecuteButton->setEnabled(false);
+
     // Status Bar
     ui->statusbar->showMessage("Welcome to SIOR-TITAN Controller");
 }
@@ -29,15 +31,26 @@ MainWindow::~MainWindow() {
 // Print information of program
 void MainWindow::About() {
     QMessageBox msgBox;
-    msgBox.setText("Made by SweetWeeds");
+    msgBox.setText("Made by Hankyul Kwon");
     msgBox.exec();
 }
 
 
 // Load json file
 void MainWindow::Load() {
+    static QStringListModel *model = nullptr;   // model for updating list view
+
+    // Load json file from file Dialog
     QString file = QFileDialog::getOpenFileName(this, "Select File", "", "Files(*.json)");
-    qDebug() << file;
+    json_handler.Open(file);
+
+    QStringList groupList = json_handler.ReadGroupList();   // Read Group Key List
+
+    // Update Group List View
+    if (model != nullptr) delete model;
+    model = new QStringListModel(groupList);
+    ui->groupListView->setModel(model);
+    ui->groupListView->update();
 }
 
 
@@ -86,6 +99,18 @@ void MainWindow::on_testButton_clicked() {
     result = (u8)(tmp & 0x00FF);
     msgBox.setText(QString("Value:%1").arg(result));
     msgBox.exec();
+}
+
+
+// Clicked Group List View
+void MainWindow::on_groupListView_clicked(const QModelIndex &index) {
+
+}
+
+
+// Change name of group list's item
+void MainWindow::on_groupListView_objectNameChanged(const QString &objectName) {
+
 }
 /**** End of Slot Functions ****/
 
@@ -145,4 +170,5 @@ int MainWindow::setRecordMode(bool enRecord) {
     return 0;
 }
 /**** End of user functions ****/
+
 

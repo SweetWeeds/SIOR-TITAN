@@ -9,7 +9,11 @@
 #include <QDebug>
 #include <QDateTime>
 
+#include <QStringList>
+#include <QStringListModel>
+
 #include "sam160.h"
+#include "json_handler.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,10 +36,13 @@ private slots:
     void on_refreshButton_clicked();
     void on_testButton_clicked();
 
+    void on_groupListView_clicked(const QModelIndex &index);
+
 private:
     /** Variables **/
     Ui::MainWindow *ui;
     MyMotor mymotor;
+    JSON_Handler json_handler;
     bool isConnected = false;
     bool isRecording = false;
 
