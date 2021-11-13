@@ -24,7 +24,7 @@ public:
     QStringList ReadGestureList(QString groupName);
     QJsonObject ReadGesture(QString gestureName);
     void ModifyGesture(QString gestureName, int value[], int num);
-    void AddGestures(QString gestureNames[], QString SamIds[], QString Values[], int num);
+    void AddGesture(QString gestureNames, QString SamIds[], QString Values[], int num);
 private:
     QString fileName;
     QFile   file;

@@ -35,8 +35,23 @@ private slots:
     void on_recordButton_clicked();
     void on_refreshButton_clicked();
     void on_testButton_clicked();
-
     void on_groupListView_clicked(const QModelIndex &index);
+
+    void on_groupListView_objectNameChanged(const QString &objectName);
+
+    void on_addGroupButton_clicked();
+
+    void on_deleteGroupButton_clicked();
+
+    void on_addGestureButton_clicked();
+
+    void on_deleteGestureButton_clicked();
+
+    void on_singleExecuteButton_clicked();
+
+    void on_captureButton_clicked();
+
+    void on_batchExecuteButton_clicked();
 
 private:
     /** Variables **/
@@ -45,6 +60,8 @@ private:
     JSON_Handler json_handler;
     bool isConnected = false;
     bool isRecording = false;
+    QStringListModel *group_model = nullptr;   // model for updating list view
+    QStringListModel *gesture_model = nullptr;   // model for updating list view
 
     /** Functions **/
     void fillPortsInfo();
@@ -52,6 +69,8 @@ private:
     void setEnableControlButtons(bool en);
     int  setRecordMode(bool enRecord=true);
     int  setSerialConnect(bool enSerial=true);
+    void updateGroupListView(QStringList groupList);
+    void updateGestureListView(QStringList gestureList);
 };
 
 #endif // MAINWINDOW_H

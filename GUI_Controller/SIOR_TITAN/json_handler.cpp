@@ -1,4 +1,5 @@
 #include "json_handler.h"
+#include <QDebug>
 
 JSON_Handler::JSON_Handler() {
 
@@ -33,28 +34,31 @@ QStringList JSON_Handler::ReadGroupList() {
 
 void JSON_Handler::LoadGroup(QString groupName) {
     this->currentGroup = groupName;
+    qDebug() << "Current Group:" << this->currentGroup;
 }
 
 QJsonObject JSON_Handler::ReadGroup(QString groupName) {
-    return this->doc.object()[this->currentGroup].toObject();
+    QJsonObject ret = this->doc.object()[this->currentGroup].toObject();
+    qDebug() << "Read Group[" << groupName << "]" << ret;
+    return ret;
 }
 
 void JSON_Handler::AddGroup(QString groupName) {
-    this->doc.object().insert(groupName, QJsonObject());
+    this->doc.object().insert("test", "val");
+    qDebug() << "Add Group[" << groupName << "]" << this->doc.object().keys();
 }
 
 void JSON_Handler::DeleteGroup(QString groupName) {
     this->doc.object().remove(groupName);
+    qDebug() << "Delete Group[" << groupName << "]" << this->doc.object().keys();
 }
 
-void JSON_Handler::AddGesture(QString gestureName, QString SamId, QString Value) {
-    this->doc.object()[this->currentGroup].toObject().constFind(SamId);
-}
-
-void JSON_Handler::AddGestures(QString gestureNames[], QString SamIds[], QString Values[], int num) {
+void JSON_Handler::AddGesture(QString gestureName, QString SamIds[], QString Values[], int num) {
+    QJsonObject obj;
     for (int i = 0; i < num; i++) {
-        this->AddGesture(gestureNames[i], SamIds[i], Values[i]);
+        obj.insert(SamIds[i], Values[i]);
     }
+    this->doc.object()[this->currentGroup].toObject().insert(gestureName, obj);
 }
 
 void JSON_Handler::DeleteGesture(QString gestureName) {
@@ -62,7 +66,7 @@ void JSON_Handler::DeleteGesture(QString gestureName) {
 }
 
 QStringList JSON_Handler::ReadGestureList(QString groupName) {
-    return this->doc.object()[groupName].toObject().keys();
+    return this->doc[groupName].toObject().keys();
 }
 
 QJsonObject JSON_Handler::ReadGesture(QString gestureName) {
