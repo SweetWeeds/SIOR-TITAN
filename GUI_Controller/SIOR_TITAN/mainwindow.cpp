@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+QJsonArray DefaultPos = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
@@ -59,9 +61,10 @@ void MainWindow::Load() {
 
 // Save json file
 void MainWindow::Save() {
-    QString filename = QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd_HH:mm:ss");
-    QString file = QFileDialog::getSaveFileName(this, "Save File", filename+".json", "Files(*.json)");
-    qDebug() << file;
+    QString fileName = QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd_HH:mm:ss");
+    fileName = QFileDialog::getSaveFileName(this, "Save File", fileName+".json", "Files(*.json)");
+    this->json_handler.Save(fileName);
+    qDebug() << fileName;
 }
 
 

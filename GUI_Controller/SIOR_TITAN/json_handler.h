@@ -8,8 +8,6 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 
-QJsonArray DefaultPos = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
 class JSON_Handler {
 public:
     JSON_Handler();
@@ -28,7 +26,6 @@ public:
 private:
     QString fileName;
     QFile   file;
-    QJsonDocument   doc;
     QJsonObject     root_obj;
 };
 

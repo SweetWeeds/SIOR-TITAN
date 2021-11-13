@@ -25,8 +25,8 @@ void JSON_Handler::Save(QString fileName) {
         qWarning("Could not open json file to save.");
         return;
     }
-
-    saveFile.write(this->doc.toJson());
+    QJsonDocument saveDoc(this->root_obj);
+    saveFile.write(saveDoc.toJson());
 }
 
 QStringList JSON_Handler::ReadGroupList() {
