@@ -50,11 +50,13 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../SIOR_TITAN/main.cpp \
+SOURCES       = ../SIOR_TITAN/json_handler.cpp \
+		../SIOR_TITAN/main.cpp \
 		../SIOR_TITAN/mainwindow.cpp \
 		../SIOR_TITAN/sam160.cpp moc_mainwindow.cpp \
 		moc_sam160.cpp
-OBJECTS       = main.o \
+OBJECTS       = json_handler.o \
+		main.o \
 		mainwindow.o \
 		sam160.o \
 		moc_mainwindow.o \
@@ -237,8 +239,10 @@ DIST          = ../../../../anaconda3/mkspecs/features/spec_pre.prf \
 		../../../../anaconda3/mkspecs/features/exceptions.prf \
 		../../../../anaconda3/mkspecs/features/yacc.prf \
 		../../../../anaconda3/mkspecs/features/lex.prf \
-		../SIOR_TITAN/SIOR_TITAN.pro ../SIOR_TITAN/mainwindow.h \
-		../SIOR_TITAN/sam160.h ../SIOR_TITAN/main.cpp \
+		../SIOR_TITAN/SIOR_TITAN.pro ../SIOR_TITAN/json_handler.h \
+		../SIOR_TITAN/mainwindow.h \
+		../SIOR_TITAN/sam160.h ../SIOR_TITAN/json_handler.cpp \
+		../SIOR_TITAN/main.cpp \
 		../SIOR_TITAN/mainwindow.cpp \
 		../SIOR_TITAN/sam160.cpp
 QMAKE_TARGET  = SIOR_TITAN
@@ -634,8 +638,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../../anaconda3/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../SIOR_TITAN/mainwindow.h ../SIOR_TITAN/sam160.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../SIOR_TITAN/main.cpp ../SIOR_TITAN/mainwindow.cpp ../SIOR_TITAN/sam160.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../SIOR_TITAN/json_handler.h ../SIOR_TITAN/mainwindow.h ../SIOR_TITAN/sam160.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../SIOR_TITAN/json_handler.cpp ../SIOR_TITAN/main.cpp ../SIOR_TITAN/mainwindow.cpp ../SIOR_TITAN/sam160.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../SIOR_TITAN/mainwindow.ui $(DISTDIR)/
 
 
@@ -774,22 +778,45 @@ moc_mainwindow.cpp: ../../../../anaconda3/include/qt/QtWidgets/QMainWindow \
 		../../../../anaconda3/include/qt/QtGui/qtouchdevice.h \
 		../../../../anaconda3/include/qt/QtWidgets/qtabwidget.h \
 		../../../../anaconda3/include/qt/QtGui/qicon.h \
-		../SIOR_TITAN/sam160.h \
-		../../../../anaconda3/include/qt/QtSerialPort/qserialport.h \
-		../../../../anaconda3/include/qt/QtSerialPort/qserialportglobal.h \
+		../../../../anaconda3/include/qt/QtSerialPort/QSerialPortInfo \
 		../../../../anaconda3/include/qt/QtSerialPort/qserialportinfo.h \
+		../../../../anaconda3/include/qt/QtSerialPort/qserialportglobal.h \
+		../../../../anaconda3/include/qt/QtCore/QFile \
+		../../../../anaconda3/include/qt/QtWidgets/QFileDialog \
+		../../../../anaconda3/include/qt/QtWidgets/qfiledialog.h \
+		../../../../anaconda3/include/qt/QtCore/qdir.h \
+		../../../../anaconda3/include/qt/QtCore/qfileinfo.h \
+		../../../../anaconda3/include/qt/QtWidgets/qdialog.h \
+		../../../../anaconda3/include/qt/QtCore/QDebug \
+		../../../../anaconda3/include/qt/QtCore/QDateTime \
+		../../../../anaconda3/include/qt/QtCore/qdatetime.h \
+		../../../../anaconda3/include/qt/QtCore/QStringList \
+		../../../../anaconda3/include/qt/QtCore/QStringListModel \
+		../../../../anaconda3/include/qt/QtCore/qstringlistmodel.h \
+		../../../../anaconda3/include/qt/QtCore/qabstractitemmodel.h \
+		../SIOR_TITAN/sam160.h \
+		../../../../anaconda3/include/qt/QtSerialPort/QSerialPort \
+		../../../../anaconda3/include/qt/QtSerialPort/qserialport.h \
 		../../../../anaconda3/include/qt/QtCore/QThread \
 		../../../../anaconda3/include/qt/QtCore/qthread.h \
 		../../../../anaconda3/include/qt/QtWidgets/QMessageBox \
 		../../../../anaconda3/include/qt/QtWidgets/qmessagebox.h \
-		../../../../anaconda3/include/qt/QtWidgets/qdialog.h \
 		../../../../anaconda3/include/qt/QtCore/QMutex \
+		../SIOR_TITAN/json_handler.h \
+		../../../../anaconda3/include/qt/QtCore/QJsonObject \
+		../../../../anaconda3/include/qt/QtCore/qjsonobject.h \
+		../../../../anaconda3/include/qt/QtCore/qjsonvalue.h \
+		../../../../anaconda3/include/qt/QtCore/QJsonDocument \
+		../../../../anaconda3/include/qt/QtCore/qjsondocument.h \
+		../../../../anaconda3/include/qt/QtCore/QJsonArray \
+		../../../../anaconda3/include/qt/QtCore/qjsonarray.h \
 		../SIOR_TITAN/mainwindow.h \
 		moc_predefs.h \
 		../../../../anaconda3/bin/moc
 	/home/han/anaconda3/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/han/anaconda3/mkspecs/linux-g++ -I/home/han/workspace/SIOR-TITAN/GUI_Controller/SIOR_TITAN -I/home/han/anaconda3/include/qt -I/home/han/anaconda3/include/qt/QtWidgets -I/home/han/anaconda3/include/qt/QtGui -I/home/han/anaconda3/include/qt/QtSerialPort -I/home/han/anaconda3/include/qt/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../SIOR_TITAN/mainwindow.h -o moc_mainwindow.cpp
 
-moc_sam160.cpp: ../../../../anaconda3/include/qt/QtSerialPort/qserialport.h \
+moc_sam160.cpp: ../../../../anaconda3/include/qt/QtSerialPort/QSerialPort \
+		../../../../anaconda3/include/qt/QtSerialPort/qserialport.h \
 		../../../../anaconda3/include/qt/QtCore/qiodevice.h \
 		../../../../anaconda3/include/qt/QtCore/qglobal.h \
 		../../../../anaconda3/include/qt/QtCore/qconfig-bootstrapped.h \
@@ -838,6 +865,7 @@ moc_sam160.cpp: ../../../../anaconda3/include/qt/QtSerialPort/qserialport.h \
 		../../../../anaconda3/include/qt/QtCore/qcontainerfwd.h \
 		../../../../anaconda3/include/qt/QtCore/qobject_impl.h \
 		../../../../anaconda3/include/qt/QtSerialPort/qserialportglobal.h \
+		../../../../anaconda3/include/qt/QtSerialPort/QSerialPortInfo \
 		../../../../anaconda3/include/qt/QtSerialPort/qserialportinfo.h \
 		../../../../anaconda3/include/qt/QtCore/QThread \
 		../../../../anaconda3/include/qt/QtCore/qthread.h \
@@ -920,6 +948,80 @@ compiler_lex_clean:
 compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
+
+json_handler.o: ../SIOR_TITAN/json_handler.cpp ../SIOR_TITAN/json_handler.h \
+		../../../../anaconda3/include/qt/QtCore/QFile \
+		../../../../anaconda3/include/qt/QtCore/qfile.h \
+		../../../../anaconda3/include/qt/QtCore/qfiledevice.h \
+		../../../../anaconda3/include/qt/QtCore/qiodevice.h \
+		../../../../anaconda3/include/qt/QtCore/qglobal.h \
+		../../../../anaconda3/include/qt/QtCore/qconfig-bootstrapped.h \
+		../../../../anaconda3/include/qt/QtCore/qconfig.h \
+		../../../../anaconda3/include/qt/QtCore/qtcore-config.h \
+		../../../../anaconda3/include/qt/QtCore/qsystemdetection.h \
+		../../../../anaconda3/include/qt/QtCore/qprocessordetection.h \
+		../../../../anaconda3/include/qt/QtCore/qcompilerdetection.h \
+		../../../../anaconda3/include/qt/QtCore/qtypeinfo.h \
+		../../../../anaconda3/include/qt/QtCore/qsysinfo.h \
+		../../../../anaconda3/include/qt/QtCore/qlogging.h \
+		../../../../anaconda3/include/qt/QtCore/qflags.h \
+		../../../../anaconda3/include/qt/QtCore/qatomic.h \
+		../../../../anaconda3/include/qt/QtCore/qbasicatomic.h \
+		../../../../anaconda3/include/qt/QtCore/qatomic_bootstrap.h \
+		../../../../anaconda3/include/qt/QtCore/qgenericatomic.h \
+		../../../../anaconda3/include/qt/QtCore/qatomic_cxx11.h \
+		../../../../anaconda3/include/qt/QtCore/qatomic_msvc.h \
+		../../../../anaconda3/include/qt/QtCore/qglobalstatic.h \
+		../../../../anaconda3/include/qt/QtCore/qmutex.h \
+		../../../../anaconda3/include/qt/QtCore/qnumeric.h \
+		../../../../anaconda3/include/qt/QtCore/qversiontagging.h \
+		../../../../anaconda3/include/qt/QtCore/qobject.h \
+		../../../../anaconda3/include/qt/QtCore/qobjectdefs.h \
+		../../../../anaconda3/include/qt/QtCore/qnamespace.h \
+		../../../../anaconda3/include/qt/QtCore/qobjectdefs_impl.h \
+		../../../../anaconda3/include/qt/QtCore/qstring.h \
+		../../../../anaconda3/include/qt/QtCore/qchar.h \
+		../../../../anaconda3/include/qt/QtCore/qbytearray.h \
+		../../../../anaconda3/include/qt/QtCore/qrefcount.h \
+		../../../../anaconda3/include/qt/QtCore/qarraydata.h \
+		../../../../anaconda3/include/qt/QtCore/qstringbuilder.h \
+		../../../../anaconda3/include/qt/QtCore/qlist.h \
+		../../../../anaconda3/include/qt/QtCore/qalgorithms.h \
+		../../../../anaconda3/include/qt/QtCore/qiterator.h \
+		../../../../anaconda3/include/qt/QtCore/qhashfunctions.h \
+		../../../../anaconda3/include/qt/QtCore/qpair.h \
+		../../../../anaconda3/include/qt/QtCore/qbytearraylist.h \
+		../../../../anaconda3/include/qt/QtCore/qstringlist.h \
+		../../../../anaconda3/include/qt/QtCore/qregexp.h \
+		../../../../anaconda3/include/qt/QtCore/qstringmatcher.h \
+		../../../../anaconda3/include/qt/QtCore/qcoreevent.h \
+		../../../../anaconda3/include/qt/QtCore/qscopedpointer.h \
+		../../../../anaconda3/include/qt/QtCore/qmetatype.h \
+		../../../../anaconda3/include/qt/QtCore/qvarlengtharray.h \
+		../../../../anaconda3/include/qt/QtCore/qcontainerfwd.h \
+		../../../../anaconda3/include/qt/QtCore/qobject_impl.h \
+		../../../../anaconda3/include/qt/QtCore/QJsonObject \
+		../../../../anaconda3/include/qt/QtCore/qjsonobject.h \
+		../../../../anaconda3/include/qt/QtCore/qjsonvalue.h \
+		../../../../anaconda3/include/qt/QtCore/QJsonDocument \
+		../../../../anaconda3/include/qt/QtCore/qjsondocument.h \
+		../../../../anaconda3/include/qt/QtCore/QJsonArray \
+		../../../../anaconda3/include/qt/QtCore/qjsonarray.h \
+		../../../../anaconda3/include/qt/QtCore/QDebug \
+		../../../../anaconda3/include/qt/QtCore/qdebug.h \
+		../../../../anaconda3/include/qt/QtCore/qhash.h \
+		../../../../anaconda3/include/qt/QtCore/qmap.h \
+		../../../../anaconda3/include/qt/QtCore/qtextstream.h \
+		../../../../anaconda3/include/qt/QtCore/qlocale.h \
+		../../../../anaconda3/include/qt/QtCore/qvariant.h \
+		../../../../anaconda3/include/qt/QtCore/qshareddata.h \
+		../../../../anaconda3/include/qt/QtCore/qvector.h \
+		../../../../anaconda3/include/qt/QtCore/qpoint.h \
+		../../../../anaconda3/include/qt/QtCore/qset.h \
+		../../../../anaconda3/include/qt/QtCore/qcontiguouscache.h \
+		../../../../anaconda3/include/qt/QtCore/qsharedpointer.h \
+		../../../../anaconda3/include/qt/QtCore/qsharedpointer_impl.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o json_handler.o ../SIOR_TITAN/json_handler.cpp
 
 main.o: ../SIOR_TITAN/main.cpp ../SIOR_TITAN/mainwindow.h \
 		../../../../anaconda3/include/qt/QtWidgets/QMainWindow \
@@ -1025,16 +1127,38 @@ main.o: ../SIOR_TITAN/main.cpp ../SIOR_TITAN/mainwindow.h \
 		../../../../anaconda3/include/qt/QtGui/qtouchdevice.h \
 		../../../../anaconda3/include/qt/QtWidgets/qtabwidget.h \
 		../../../../anaconda3/include/qt/QtGui/qicon.h \
-		../SIOR_TITAN/sam160.h \
-		../../../../anaconda3/include/qt/QtSerialPort/qserialport.h \
-		../../../../anaconda3/include/qt/QtSerialPort/qserialportglobal.h \
+		../../../../anaconda3/include/qt/QtSerialPort/QSerialPortInfo \
 		../../../../anaconda3/include/qt/QtSerialPort/qserialportinfo.h \
+		../../../../anaconda3/include/qt/QtSerialPort/qserialportglobal.h \
+		../../../../anaconda3/include/qt/QtCore/QFile \
+		../../../../anaconda3/include/qt/QtWidgets/QFileDialog \
+		../../../../anaconda3/include/qt/QtWidgets/qfiledialog.h \
+		../../../../anaconda3/include/qt/QtCore/qdir.h \
+		../../../../anaconda3/include/qt/QtCore/qfileinfo.h \
+		../../../../anaconda3/include/qt/QtWidgets/qdialog.h \
+		../../../../anaconda3/include/qt/QtCore/QDebug \
+		../../../../anaconda3/include/qt/QtCore/QDateTime \
+		../../../../anaconda3/include/qt/QtCore/qdatetime.h \
+		../../../../anaconda3/include/qt/QtCore/QStringList \
+		../../../../anaconda3/include/qt/QtCore/QStringListModel \
+		../../../../anaconda3/include/qt/QtCore/qstringlistmodel.h \
+		../../../../anaconda3/include/qt/QtCore/qabstractitemmodel.h \
+		../SIOR_TITAN/sam160.h \
+		../../../../anaconda3/include/qt/QtSerialPort/QSerialPort \
+		../../../../anaconda3/include/qt/QtSerialPort/qserialport.h \
 		../../../../anaconda3/include/qt/QtCore/QThread \
 		../../../../anaconda3/include/qt/QtCore/qthread.h \
 		../../../../anaconda3/include/qt/QtWidgets/QMessageBox \
 		../../../../anaconda3/include/qt/QtWidgets/qmessagebox.h \
-		../../../../anaconda3/include/qt/QtWidgets/qdialog.h \
 		../../../../anaconda3/include/qt/QtCore/QMutex \
+		../SIOR_TITAN/json_handler.h \
+		../../../../anaconda3/include/qt/QtCore/QJsonObject \
+		../../../../anaconda3/include/qt/QtCore/qjsonobject.h \
+		../../../../anaconda3/include/qt/QtCore/qjsonvalue.h \
+		../../../../anaconda3/include/qt/QtCore/QJsonDocument \
+		../../../../anaconda3/include/qt/QtCore/qjsondocument.h \
+		../../../../anaconda3/include/qt/QtCore/QJsonArray \
+		../../../../anaconda3/include/qt/QtCore/qjsonarray.h \
 		../../../../anaconda3/include/qt/QtWidgets/QApplication \
 		../../../../anaconda3/include/qt/QtWidgets/qapplication.h \
 		../../../../anaconda3/include/qt/QtCore/qcoreapplication.h \
@@ -1148,20 +1272,90 @@ mainwindow.o: ../SIOR_TITAN/mainwindow.cpp ../SIOR_TITAN/mainwindow.h \
 		../../../../anaconda3/include/qt/QtGui/qtouchdevice.h \
 		../../../../anaconda3/include/qt/QtWidgets/qtabwidget.h \
 		../../../../anaconda3/include/qt/QtGui/qicon.h \
-		../SIOR_TITAN/sam160.h \
-		../../../../anaconda3/include/qt/QtSerialPort/qserialport.h \
-		../../../../anaconda3/include/qt/QtSerialPort/qserialportglobal.h \
+		../../../../anaconda3/include/qt/QtSerialPort/QSerialPortInfo \
 		../../../../anaconda3/include/qt/QtSerialPort/qserialportinfo.h \
+		../../../../anaconda3/include/qt/QtSerialPort/qserialportglobal.h \
+		../../../../anaconda3/include/qt/QtCore/QFile \
+		../../../../anaconda3/include/qt/QtWidgets/QFileDialog \
+		../../../../anaconda3/include/qt/QtWidgets/qfiledialog.h \
+		../../../../anaconda3/include/qt/QtCore/qdir.h \
+		../../../../anaconda3/include/qt/QtCore/qfileinfo.h \
+		../../../../anaconda3/include/qt/QtWidgets/qdialog.h \
+		../../../../anaconda3/include/qt/QtCore/QDebug \
+		../../../../anaconda3/include/qt/QtCore/QDateTime \
+		../../../../anaconda3/include/qt/QtCore/qdatetime.h \
+		../../../../anaconda3/include/qt/QtCore/QStringList \
+		../../../../anaconda3/include/qt/QtCore/QStringListModel \
+		../../../../anaconda3/include/qt/QtCore/qstringlistmodel.h \
+		../../../../anaconda3/include/qt/QtCore/qabstractitemmodel.h \
+		../SIOR_TITAN/sam160.h \
+		../../../../anaconda3/include/qt/QtSerialPort/QSerialPort \
+		../../../../anaconda3/include/qt/QtSerialPort/qserialport.h \
 		../../../../anaconda3/include/qt/QtCore/QThread \
 		../../../../anaconda3/include/qt/QtCore/qthread.h \
 		../../../../anaconda3/include/qt/QtWidgets/QMessageBox \
 		../../../../anaconda3/include/qt/QtWidgets/qmessagebox.h \
-		../../../../anaconda3/include/qt/QtWidgets/qdialog.h \
 		../../../../anaconda3/include/qt/QtCore/QMutex \
-		ui_mainwindow.h
+		../SIOR_TITAN/json_handler.h \
+		../../../../anaconda3/include/qt/QtCore/QJsonObject \
+		../../../../anaconda3/include/qt/QtCore/qjsonobject.h \
+		../../../../anaconda3/include/qt/QtCore/qjsonvalue.h \
+		../../../../anaconda3/include/qt/QtCore/QJsonDocument \
+		../../../../anaconda3/include/qt/QtCore/qjsondocument.h \
+		../../../../anaconda3/include/qt/QtCore/QJsonArray \
+		../../../../anaconda3/include/qt/QtCore/qjsonarray.h \
+		ui_mainwindow.h \
+		../../../../anaconda3/include/qt/QtCore/QVariant \
+		../../../../anaconda3/include/qt/QtWidgets/QAction \
+		../../../../anaconda3/include/qt/QtWidgets/qaction.h \
+		../../../../anaconda3/include/qt/QtWidgets/qactiongroup.h \
+		../../../../anaconda3/include/qt/QtWidgets/QApplication \
+		../../../../anaconda3/include/qt/QtWidgets/qapplication.h \
+		../../../../anaconda3/include/qt/QtCore/qcoreapplication.h \
+		../../../../anaconda3/include/qt/QtCore/qeventloop.h \
+		../../../../anaconda3/include/qt/QtWidgets/qdesktopwidget.h \
+		../../../../anaconda3/include/qt/QtGui/qguiapplication.h \
+		../../../../anaconda3/include/qt/QtGui/qinputmethod.h \
+		../../../../anaconda3/include/qt/QtWidgets/QButtonGroup \
+		../../../../anaconda3/include/qt/QtWidgets/qbuttongroup.h \
+		../../../../anaconda3/include/qt/QtWidgets/QComboBox \
+		../../../../anaconda3/include/qt/QtWidgets/qcombobox.h \
+		../../../../anaconda3/include/qt/QtWidgets/qabstractitemdelegate.h \
+		../../../../anaconda3/include/qt/QtWidgets/qstyleoption.h \
+		../../../../anaconda3/include/qt/QtWidgets/qabstractspinbox.h \
+		../../../../anaconda3/include/qt/QtGui/qvalidator.h \
+		../../../../anaconda3/include/qt/QtCore/qregularexpression.h \
+		../../../../anaconda3/include/qt/QtWidgets/qslider.h \
+		../../../../anaconda3/include/qt/QtWidgets/qabstractslider.h \
+		../../../../anaconda3/include/qt/QtWidgets/qstyle.h \
+		../../../../anaconda3/include/qt/QtWidgets/qtabbar.h \
+		../../../../anaconda3/include/qt/QtWidgets/qrubberband.h \
+		../../../../anaconda3/include/qt/QtWidgets/qframe.h \
+		../../../../anaconda3/include/qt/QtWidgets/QHeaderView \
+		../../../../anaconda3/include/qt/QtWidgets/qheaderview.h \
+		../../../../anaconda3/include/qt/QtWidgets/qabstractitemview.h \
+		../../../../anaconda3/include/qt/QtWidgets/qabstractscrollarea.h \
+		../../../../anaconda3/include/qt/QtCore/qitemselectionmodel.h \
+		../../../../anaconda3/include/qt/QtWidgets/QLabel \
+		../../../../anaconda3/include/qt/QtWidgets/qlabel.h \
+		../../../../anaconda3/include/qt/QtWidgets/QListView \
+		../../../../anaconda3/include/qt/QtWidgets/qlistview.h \
+		../../../../anaconda3/include/qt/QtWidgets/QMenu \
+		../../../../anaconda3/include/qt/QtWidgets/qmenu.h \
+		../../../../anaconda3/include/qt/QtWidgets/QMenuBar \
+		../../../../anaconda3/include/qt/QtWidgets/qmenubar.h \
+		../../../../anaconda3/include/qt/QtWidgets/QPushButton \
+		../../../../anaconda3/include/qt/QtWidgets/qpushbutton.h \
+		../../../../anaconda3/include/qt/QtWidgets/qabstractbutton.h \
+		../../../../anaconda3/include/qt/QtWidgets/QSpinBox \
+		../../../../anaconda3/include/qt/QtWidgets/qspinbox.h \
+		../../../../anaconda3/include/qt/QtWidgets/QStatusBar \
+		../../../../anaconda3/include/qt/QtWidgets/qstatusbar.h \
+		../../../../anaconda3/include/qt/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../SIOR_TITAN/mainwindow.cpp
 
 sam160.o: ../SIOR_TITAN/sam160.cpp ../SIOR_TITAN/sam160.h \
+		../../../../anaconda3/include/qt/QtSerialPort/QSerialPort \
 		../../../../anaconda3/include/qt/QtSerialPort/qserialport.h \
 		../../../../anaconda3/include/qt/QtCore/qiodevice.h \
 		../../../../anaconda3/include/qt/QtCore/qglobal.h \
@@ -1211,6 +1405,7 @@ sam160.o: ../SIOR_TITAN/sam160.cpp ../SIOR_TITAN/sam160.h \
 		../../../../anaconda3/include/qt/QtCore/qcontainerfwd.h \
 		../../../../anaconda3/include/qt/QtCore/qobject_impl.h \
 		../../../../anaconda3/include/qt/QtSerialPort/qserialportglobal.h \
+		../../../../anaconda3/include/qt/QtSerialPort/QSerialPortInfo \
 		../../../../anaconda3/include/qt/QtSerialPort/qserialportinfo.h \
 		../../../../anaconda3/include/qt/QtCore/QThread \
 		../../../../anaconda3/include/qt/QtCore/qthread.h \

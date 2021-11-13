@@ -108,21 +108,15 @@ void MainWindow::on_testButton_clicked() {
 // Clicked Group List View
 void MainWindow::on_groupListView_clicked(const QModelIndex &index) {
     qDebug() << "index: " << index.data().toString();
-    QString selectedGroupName = index.data().toString();
-    QStringList gestureList = this->json_handler.ReadGestureList(selectedGroupName);
+    this->currentGroup = index.data().toString();
+    QStringList gestureList = this->json_handler.ReadGestureList(this->currentGroup);
     this->updateGestureListView(gestureList);
-}
-
-
-// Group List View's name changed.
-void MainWindow::on_groupListView_objectNameChanged(const QString &objectName) {
-
 }
 
 // Add Group
 void MainWindow::on_addGroupButton_clicked() {
     QStringList groupList = this->json_handler.ReadGroupList();
-    QString newGroupName = QString("NewGroup%1").arg(groupList.size());
+    QString newGroupName = QString("NewGroup %1").arg(groupList.size());
     this->json_handler.AddGroup(newGroupName);
     //QStringList gestureList = this->json_handler.ReadGroupList();
     this->updateGroupListView(this->json_handler.ReadGroupList());
@@ -130,22 +124,32 @@ void MainWindow::on_addGroupButton_clicked() {
 
 // Delete Group
 void MainWindow::on_deleteGroupButton_clicked() {
-
+    QModelIndex index = ui->groupListView->currentIndex();
+    this->json_handler.DeleteGroup(index.data().toString());
+    this->updateGroupListView(this->json_handler.ReadGroupList());
 }
 
 // Add Gesture
 void MainWindow::on_addGestureButton_clicked() {
-
+    QStringList gestureList = this->json_handler.ReadGestureList(this->currentGroup);
+    QString newGestureName = QString("NewGesture %1").arg(gestureList.size());
+    this->json_handler.AddGesture(this->currentGroup, newGestureName);
+    //QStringList gestureList = this->json_handler.ReadGroupList();
+    this->updateGestureListView(this->json_handler.ReadGestureList(this->currentGroup));
+    qDebug() << "update gesture list: " << this->json_handler.ReadGestureList(this->currentGroup);
 }
 
 // Delete Gesture
 void MainWindow::on_deleteGestureButton_clicked() {
-
+    QModelIndex index = ui->gestureListView->currentIndex();
+    this->json_handler.DeleteGesture(this->currentGroup, index.data().toString());
+    this->updateGestureListView(this->json_handler.ReadGestureList(this->currentGroup));
 }
 
 // Single Execution
 void MainWindow::on_singleExecuteButton_clicked() {
-
+    qDebug() << this->json_handler.ReadGesture(currentGroup, currentGesture);
+    // Execute
 }
 
 // Capture
@@ -221,6 +225,7 @@ int MainWindow::setRecordMode(bool enRecord) {
 void MainWindow::updateGroupListView(QStringList groupList) {
     if (this->group_model != nullptr) delete this->group_model;
     this->group_model = new QStringListModel(groupList);
+    this->group_model->sort(0);
     ui->groupListView->setModel(this->group_model);
     ui->groupListView->update();
 }
@@ -228,8 +233,8 @@ void MainWindow::updateGroupListView(QStringList groupList) {
 void MainWindow::updateGestureListView(QStringList gestureList) {
     if (this->gesture_model != nullptr) delete this->gesture_model;
     gesture_model = new QStringListModel(gestureList);
+    gesture_model->sort(0);
     ui->gestureListView->setModel(gesture_model);
     ui->gestureListView->update();
 }
 /**** End of user functions ****/
-

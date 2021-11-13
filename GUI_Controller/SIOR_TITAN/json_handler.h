@@ -8,6 +8,8 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 
+QJsonArray DefaultPos = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
 class JSON_Handler {
 public:
     JSON_Handler();
@@ -16,20 +18,18 @@ public:
     void Save(QString fileName);
     QStringList ReadGroupList();
     QJsonObject ReadGroup(QString groupName);
-    void LoadGroup(QString groupName);
     void AddGroup(QString groupName);
     void DeleteGroup(QString groupName);
-    void AddGesture(QString gestureName, QString SamId, QString Value);
-    void DeleteGesture(QString gestureName);
+    void AddGesture(QString groupName, QString gestureName);
+    void DeleteGesture(QString groupName, QString gestureName);
     QStringList ReadGestureList(QString groupName);
-    QJsonObject ReadGesture(QString gestureName);
-    void ModifyGesture(QString gestureName, int value[], int num);
-    void AddGesture(QString gestureNames, QString SamIds[], QString Values[], int num);
+    QJsonObject ReadGesture(QString groupName, QString gestureName);
+    void ModifyGesture(QString groupName, QString gestureName, QJsonValue data);
 private:
     QString fileName;
     QFile   file;
-    QJsonDocument doc;
-    QString currentGroup;
+    QJsonDocument   doc;
+    QJsonObject     root_obj;
 };
 
 #endif // JSON_HANDLER_H

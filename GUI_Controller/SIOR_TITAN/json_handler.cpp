@@ -15,7 +15,8 @@ void JSON_Handler::Open(QString fileName) {
         qWarning("Couldn't open json file to load.");
         return;
     }
-    this->doc = QJsonDocument::fromJson(this->file.readAll());
+    QJsonDocument doc = QJsonDocument::fromJson(this->file.readAll());
+    this->root_obj = doc.object();
 }
 
 void JSON_Handler::Save(QString fileName) {
@@ -29,53 +30,52 @@ void JSON_Handler::Save(QString fileName) {
 }
 
 QStringList JSON_Handler::ReadGroupList() {
-    return this->doc.object().keys();
-}
-
-void JSON_Handler::LoadGroup(QString groupName) {
-    this->currentGroup = groupName;
-    qDebug() << "Current Group:" << this->currentGroup;
+    return this->root_obj.keys();
 }
 
 QJsonObject JSON_Handler::ReadGroup(QString groupName) {
-    QJsonObject ret = this->doc.object()[this->currentGroup].toObject();
+    QJsonObject ret = this->root_obj[groupName].toObject();
     qDebug() << "Read Group[" << groupName << "]" << ret;
     return ret;
 }
 
 void JSON_Handler::AddGroup(QString groupName) {
-    this->doc.object().insert("test", "val");
-    qDebug() << "Add Group[" << groupName << "]" << this->doc.object().keys();
+    this->root_obj.insert(groupName, QJsonObject());
+    //this->root_obj[groupName] = "null";
+    qDebug() << "Add Group[" << groupName << "]" << this->root_obj.keys();
 }
 
 void JSON_Handler::DeleteGroup(QString groupName) {
-    this->doc.object().remove(groupName);
-    qDebug() << "Delete Group[" << groupName << "]" << this->doc.object().keys();
+    this->root_obj.remove(groupName);
+    qDebug() << "Delete Group[" << groupName << "]" << this->root_obj.keys();
 }
 
-void JSON_Handler::AddGesture(QString gestureName, QString SamIds[], QString Values[], int num) {
-    QJsonObject obj;
-    for (int i = 0; i < num; i++) {
-        obj.insert(SamIds[i], Values[i]);
+void JSON_Handler::AddGesture(QString groupName, QString gestureName) {
+    QJsonArray arr;
+    for (int i = 0; i < MOTOR_NUM; i++) {
+        arr.append(0);
     }
-    this->doc.object()[this->currentGroup].toObject().insert(gestureName, obj);
+    QJsonObject obj = this->root_obj[groupName].toObject();
+    obj.insert(gestureName, arr);
+    this->root_obj[groupName] = obj;
 }
 
-void JSON_Handler::DeleteGesture(QString gestureName) {
-    this->doc[this->currentGroup].toObject().remove(gestureName);
+void JSON_Handler::DeleteGesture(QString groupName, QString gestureName) {
+    QJsonObject obj = this->root_obj[groupName].toObject();
+    obj.remove(gestureName);
+    this->root_obj[groupName] = obj;
 }
 
 QStringList JSON_Handler::ReadGestureList(QString groupName) {
-    return this->doc[groupName].toObject().keys();
+    return this->root_obj[groupName].toObject().keys();
 }
 
-QJsonObject JSON_Handler::ReadGesture(QString gestureName) {
-    return this->doc[this->currentGroup][gestureName].toObject();
+QJsonObject JSON_Handler::ReadGesture(QString groupName, QString gestureName) {
+    return this->root_obj[groupName].toObject()[gestureName].toObject();
 }
 
-void JSON_Handler::ModifyGesture(QString gestureName, int value[], int num) {
-    QJsonObject obj = this->doc[this->currentGroup][gestureName].toObject();
-    for (int i = 0; i < num; i++) {
-        obj[QString(i)] = value[i];
-    }
+void JSON_Handler::ModifyGesture(QString groupName, QString gestureName, QJsonValue data) {
+    QJsonObject obj = this->root_obj[groupName].toObject();
+    obj.insert(gestureName, data);
+    this->root_obj.insert(groupName, obj);
 }

@@ -37,8 +37,6 @@ private slots:
     void on_testButton_clicked();
     void on_groupListView_clicked(const QModelIndex &index);
 
-    void on_groupListView_objectNameChanged(const QString &objectName);
-
     void on_addGroupButton_clicked();
 
     void on_deleteGroupButton_clicked();
@@ -62,6 +60,8 @@ private:
     bool isRecording = false;
     QStringListModel *group_model = nullptr;   // model for updating list view
     QStringListModel *gesture_model = nullptr;   // model for updating list view
+    QString currentGroup;
+    QString currentGesture;
 
     /** Functions **/
     void fillPortsInfo();
