@@ -34,7 +34,6 @@ private slots:
     void on_serialConnectButton_clicked();
     void on_recordButton_clicked();
     void on_refreshButton_clicked();
-    void on_testButton_clicked();
     void on_groupListView_clicked(const QModelIndex &index);
 
     void on_addGroupButton_clicked();
@@ -50,6 +49,10 @@ private slots:
     void on_captureButton_clicked();
 
     void on_batchExecuteButton_clicked();
+
+    void on_testWriteButton_clicked();
+
+    void on_testReadButton_clicked();
 
 private:
     /** Variables **/

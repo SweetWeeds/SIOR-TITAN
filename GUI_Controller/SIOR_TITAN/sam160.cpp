@@ -11,6 +11,7 @@ MyMotor::~MyMotor() {
 
 
 int MyMotor::Connect(const QString dev, int baudrate) {
+    qDebug() << "Connecting to " << dev << ":" << baudrate;
     m_mutex.lock();
     this->m_serialPort.setPortName(dev);
     this->m_serialPort.setBaudRate(baudrate);
@@ -19,7 +20,7 @@ int MyMotor::Connect(const QString dev, int baudrate) {
     this->m_serialPort.setStopBits(QSerialPort::OneStop);
     this->m_serialPort.setFlowControl(QSerialPort::NoFlowControl);
     if (!this->m_serialPort.open(QIODevice::ReadWrite)) {
-        emit error(tr("Can't open %1, error code %2").arg(dev).arg(this->m_serialPort.error()));
+        qDebug() << "Can't open, error code: " << this->m_serialPort.error();
         m_mutex.unlock();
         return -1;
     }
@@ -43,10 +44,12 @@ void MyMotor::SendByte(u8 data) {
 
 u8 MyMotor::GetByte(u16 timeout=TIMEOUT) {
     u8 buf = 0x00;
+    QByteArray responseData;
     if (this->m_serialPort.waitForBytesWritten(timeout)) {
-        if (this->m_serialPort.read((char *)&buf, 1) == -1) {
-            emit error(tr("[ERROR] Reading error."));
-        }
+        responseData = this->m_serialPort.readAll();
+        while (this->m_serialPort.waitForReadyRead(timeout) && responseData.size() < 2)
+            responseData += this->m_serialPort.readAll();
+        qDebug() << "responseData[" << responseData.size() << "]: " << responseData;
     }
     return buf;
 } // UART Receive Function

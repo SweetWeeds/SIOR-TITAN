@@ -61,7 +61,7 @@ void MainWindow::Load() {
 
 // Save json file
 void MainWindow::Save() {
-    QString fileName = QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd_HH:mm:ss");
+    QString fileName = QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd_HHmmss");
     fileName = QFileDialog::getSaveFileName(this, "Save File", fileName+".json", "Files(*.json)");
     this->json_handler.Save(fileName);
     qDebug() << fileName;
@@ -95,18 +95,19 @@ void MainWindow::on_refreshButton_clicked() {
 }
 
 
-// Clicked Test Button
-void MainWindow::on_testButton_clicked() {
-    QMessageBox msgBox;
-    u8 result = 0;
+// Clicked Test Write Button
+void MainWindow::on_testWriteButton_clicked() {
+    u16 tmp;
     u16 pos = (u16)ui->testSpinBox->value();
-    u16 tmp = this->mymotor.Quick_PosControl_CMD((u8)0x00, 4, pos);
-    tmp = this->mymotor.Quick_StatusRead_CMD((u8)0x00);
-    result = (u8)(tmp & 0x00FF);
-    msgBox.setText(QString("Value:%1").arg(result));
-    msgBox.exec();
+    qDebug() << "pos: " << pos;
+    qDebug() << "QuickPosCon";
+    tmp = this->mymotor.Quick_PosControl_CMD((u8)0x00, 4, pos);
 }
 
+void MainWindow::on_testReadButton_clicked() {
+    qDebug() << "QuickStatusRead";
+    u16 tmp = this->mymotor.Quick_StatusRead_CMD((u8)0x00);
+}
 
 // Clicked Group List View
 void MainWindow::on_groupListView_clicked(const QModelIndex &index) {
@@ -184,7 +185,7 @@ void MainWindow::refreshSerialPortList() {
 
 // Try to connect serial device.
 int MainWindow::setSerialConnect(bool enSerial) {
-    if (enSerial)
+    if (!enSerial)
         this->mymotor.Disconnect();
     else
         this->mymotor.Connect(ui->serialComboBox->currentText(), ui->baudrateSpinBox->value());
@@ -196,9 +197,9 @@ int MainWindow::setSerialConnect(bool enSerial) {
     ui->baudrateSpinBox->setEnabled(!enSerial);
     ui->serialComboBox->setEnabled(!enSerial);
 
-    ui->statusbar->showMessage(enSerial ? "Disconnect Complete" : QString("Connected to %1:%2").arg(ui->serialComboBox->currentText(), ui->baudrateSpinBox->value()));
+    ui->statusbar->showMessage(!enSerial ? "Disconnect Complete" : QString("Connected to %1:%2").arg(ui->serialComboBox->currentText(), ui->baudrateSpinBox->value()));
 
-    if (!enSerial) this->setEnableControlButtons(false);
+    this->setEnableControlButtons(enSerial);
 
     this->isConnected = enSerial;
 
@@ -241,3 +242,6 @@ void MainWindow::updateGestureListView(QStringList gestureList) {
     ui->gestureListView->update();
 }
 /**** End of user functions ****/
+
+
+

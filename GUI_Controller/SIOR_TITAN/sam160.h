@@ -6,8 +6,9 @@
 #include <QThread>
 #include <QMessageBox>
 #include <QMutex>
+#include <QDebug>
 
-#define TIMEOUT     1000     // 500ms
+#define TIMEOUT     100     // 500ms
 #define HEADER      0xFF
 
 /*--------------------data definition ------------------------------------------------------------------------------------------------*/

@@ -52,11 +52,13 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../SIOR_TITAN/main.cpp \
+SOURCES       = ../SIOR_TITAN/json_handler.cpp \
+		../SIOR_TITAN/main.cpp \
 		../SIOR_TITAN/mainwindow.cpp \
 		../SIOR_TITAN/sam160.cpp moc_mainwindow.cpp \
 		moc_sam160.cpp
-OBJECTS       = main.o \
+OBJECTS       = json_handler.o \
+		main.o \
 		mainwindow.o \
 		sam160.o \
 		moc_mainwindow.o \
@@ -235,6 +237,7 @@ DIST          = ../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/spec_pre.p
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/qt_config.prf \
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/spec_post.prf \
+		../SIOR_TITAN/.qmake.stash \
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/toolchain.prf \
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/default_pre.prf \
@@ -254,8 +257,10 @@ DIST          = ../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/spec_pre.p
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/exceptions.prf \
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/yacc.prf \
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/lex.prf \
-		../SIOR_TITAN/SIOR_TITAN.pro ../SIOR_TITAN/mainwindow.h \
-		../SIOR_TITAN/sam160.h ../SIOR_TITAN/main.cpp \
+		../SIOR_TITAN/SIOR_TITAN.pro ../SIOR_TITAN/json_handler.h \
+		../SIOR_TITAN/mainwindow.h \
+		../SIOR_TITAN/sam160.h ../SIOR_TITAN/json_handler.cpp \
+		../SIOR_TITAN/main.cpp \
 		../SIOR_TITAN/mainwindow.cpp \
 		../SIOR_TITAN/sam160.cpp
 QMAKE_TARGET  = SIOR_TITAN
@@ -443,6 +448,7 @@ Makefile: ../SIOR_TITAN/SIOR_TITAN.pro ../../../../Qt5.12.11/5.12.11/gcc_64/mksp
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/qt_config.prf \
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/toolchain.prf \
 		../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/default_pre.prf \
@@ -638,6 +644,7 @@ Makefile: ../SIOR_TITAN/SIOR_TITAN.pro ../../../../Qt5.12.11/5.12.11/gcc_64/mksp
 ../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/qt_config.prf:
 ../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/linux-g++/qmake.conf:
 ../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/exclusive_builds.prf:
 ../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/toolchain.prf:
 ../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/default_pre.prf:
@@ -673,8 +680,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../../Qt5.12.11/5.12.11/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../SIOR_TITAN/mainwindow.h ../SIOR_TITAN/sam160.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../SIOR_TITAN/main.cpp ../SIOR_TITAN/mainwindow.cpp ../SIOR_TITAN/sam160.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../SIOR_TITAN/json_handler.h ../SIOR_TITAN/mainwindow.h ../SIOR_TITAN/sam160.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../SIOR_TITAN/json_handler.cpp ../SIOR_TITAN/main.cpp ../SIOR_TITAN/mainwindow.cpp ../SIOR_TITAN/sam160.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../SIOR_TITAN/mainwindow.ui $(DISTDIR)/
 
 
@@ -820,6 +827,7 @@ moc_mainwindow.cpp: ../SIOR_TITAN/mainwindow.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/QSerialPortInfo \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/qserialportinfo.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/qserialportglobal.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QFile \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QFileDialog \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qfiledialog.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qdir.h \
@@ -828,6 +836,10 @@ moc_mainwindow.cpp: ../SIOR_TITAN/mainwindow.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QDebug \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QDateTime \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qdatetime.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QStringList \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QStringListModel \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qstringlistmodel.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../SIOR_TITAN/sam160.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/QSerialPort \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/qserialport.h \
@@ -836,6 +848,14 @@ moc_mainwindow.cpp: ../SIOR_TITAN/mainwindow.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QMessageBox \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qmessagebox.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QMutex \
+		../SIOR_TITAN/json_handler.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QJsonObject \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsonobject.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsonvalue.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QJsonDocument \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsondocument.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QJsonArray \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsonarray.h \
 		moc_predefs.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/bin/moc
 	/home/soo/Qt5.12.11/5.12.11/gcc_64/bin/moc $(DEFINES) --include /home/soo/Desktop/SIOR-TITAN/GUI_Controller/build-SIOR_TITAN-Desktop_Qt_5_12_11_GCC_64bit-Debug/moc_predefs.h -I/home/soo/Qt5.12.11/5.12.11/gcc_64/mkspecs/linux-g++ -I/home/soo/Desktop/SIOR-TITAN/GUI_Controller/SIOR_TITAN -I/home/soo/Qt5.12.11/5.12.11/gcc_64/include -I/home/soo/Qt5.12.11/5.12.11/gcc_64/include/QtWidgets -I/home/soo/Qt5.12.11/5.12.11/gcc_64/include/QtGui -I/home/soo/Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort -I/home/soo/Qt5.12.11/5.12.11/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../SIOR_TITAN/mainwindow.h -o moc_mainwindow.cpp
@@ -979,6 +999,83 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
+json_handler.o: ../SIOR_TITAN/json_handler.cpp ../SIOR_TITAN/json_handler.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QFile \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qfile.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qfiledevice.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qiodevice.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qglobal.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qconfig.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qtcore-config.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qsystemdetection.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qprocessordetection.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qtypeinfo.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qsysinfo.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qlogging.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qflags.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qatomic.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qbasicatomic.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qgenericatomic.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qglobalstatic.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qmutex.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qnumeric.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qversiontagging.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qobject.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qnamespace.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qstring.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qchar.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qbytearray.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qrefcount.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qarraydata.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qstringliteral.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qstringalgorithms.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qstringview.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qstringbuilder.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qlist.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qalgorithms.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qiterator.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qhashfunctions.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qpair.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qbytearraylist.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qstringlist.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qregexp.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qstringmatcher.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qcoreevent.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qscopedpointer.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qmetatype.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qobject_impl.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QJsonObject \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsonobject.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsonvalue.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QJsonDocument \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsondocument.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QJsonArray \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsonarray.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QDebug \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qdebug.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qhash.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qmap.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qtextstream.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qlocale.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qvariant.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qshareddata.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qvector.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qpoint.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qset.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qcontiguouscache.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qsharedpointer.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qsharedpointer_impl.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o json_handler.o ../SIOR_TITAN/json_handler.cpp
+
 main.o: ../SIOR_TITAN/main.cpp ../SIOR_TITAN/mainwindow.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QMainWindow \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qmainwindow.h \
@@ -1089,6 +1186,7 @@ main.o: ../SIOR_TITAN/main.cpp ../SIOR_TITAN/mainwindow.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/QSerialPortInfo \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/qserialportinfo.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/qserialportglobal.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QFile \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QFileDialog \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qfiledialog.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qdir.h \
@@ -1097,6 +1195,10 @@ main.o: ../SIOR_TITAN/main.cpp ../SIOR_TITAN/mainwindow.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QDebug \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QDateTime \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qdatetime.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QStringList \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QStringListModel \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qstringlistmodel.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../SIOR_TITAN/sam160.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/QSerialPort \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/qserialport.h \
@@ -1105,6 +1207,14 @@ main.o: ../SIOR_TITAN/main.cpp ../SIOR_TITAN/mainwindow.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QMessageBox \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qmessagebox.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QMutex \
+		../SIOR_TITAN/json_handler.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QJsonObject \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsonobject.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsonvalue.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QJsonDocument \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsondocument.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QJsonArray \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsonarray.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QApplication \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qapplication.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qcoreapplication.h \
@@ -1224,6 +1334,7 @@ mainwindow.o: ../SIOR_TITAN/mainwindow.cpp ../SIOR_TITAN/mainwindow.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/QSerialPortInfo \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/qserialportinfo.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/qserialportglobal.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QFile \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QFileDialog \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qfiledialog.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qdir.h \
@@ -1232,6 +1343,10 @@ mainwindow.o: ../SIOR_TITAN/mainwindow.cpp ../SIOR_TITAN/mainwindow.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QDebug \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QDateTime \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qdatetime.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QStringList \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QStringListModel \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qstringlistmodel.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../SIOR_TITAN/sam160.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/QSerialPort \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtSerialPort/qserialport.h \
@@ -1240,7 +1355,58 @@ mainwindow.o: ../SIOR_TITAN/mainwindow.cpp ../SIOR_TITAN/mainwindow.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QMessageBox \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qmessagebox.h \
 		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QMutex \
-		ui_mainwindow.h
+		../SIOR_TITAN/json_handler.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QJsonObject \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsonobject.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsonvalue.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QJsonDocument \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsondocument.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QJsonArray \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qjsonarray.h \
+		ui_mainwindow.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/QVariant \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QAction \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qaction.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QApplication \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qapplication.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qcoreapplication.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qeventloop.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtGui/qguiapplication.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtGui/qinputmethod.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QComboBox \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qcombobox.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qstyleoption.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtGui/qvalidator.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qregularexpression.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qslider.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qabstractslider.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qstyle.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qtabbar.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qrubberband.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qframe.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QLabel \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qlabel.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QListView \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qlistview.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qabstractitemview.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtCore/qitemselectionmodel.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QMenu \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qmenu.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QMenuBar \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qmenubar.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QPushButton \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qpushbutton.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qabstractbutton.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QSpinBox \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qspinbox.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QStatusBar \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/qstatusbar.h \
+		../../../../Qt5.12.11/5.12.11/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../SIOR_TITAN/mainwindow.cpp
 
 sam160.o: ../SIOR_TITAN/sam160.cpp ../SIOR_TITAN/sam160.h \
