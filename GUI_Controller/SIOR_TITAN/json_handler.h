@@ -8,6 +8,8 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 
+typedef unsigned char u8;
+
 class JSON_Handler {
 public:
     JSON_Handler();
@@ -21,8 +23,9 @@ public:
     void AddGesture(QString groupName, QString gestureName);
     void DeleteGesture(QString groupName, QString gestureName);
     QStringList ReadGestureList(QString groupName);
-    QJsonObject ReadGesture(QString groupName, QString gestureName);
-    void ModifyGesture(QString groupName, QString gestureName, QJsonValue data);
+    QJsonArray  ReadGesture(QString groupName, QString gestureName);
+    //void ModifyGesture(QString groupName, QString gestureName, QJsonValue data);
+    void ModifyGesture(QString groupName, QString gestureName, u8 data[]);
 private:
     QString fileName;
     QFile   file;

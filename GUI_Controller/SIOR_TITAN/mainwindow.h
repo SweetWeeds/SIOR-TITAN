@@ -54,6 +54,10 @@ private slots:
 
     void on_testReadButton_clicked();
 
+    void on_gestureListView_clicked(const QModelIndex &index);
+
+    void on_setIdButton_clicked();
+
 private:
     /** Variables **/
     Ui::MainWindow *ui;

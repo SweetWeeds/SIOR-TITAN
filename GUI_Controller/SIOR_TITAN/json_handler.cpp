@@ -70,12 +70,21 @@ QStringList JSON_Handler::ReadGestureList(QString groupName) {
     return this->root_obj[groupName].toObject().keys();
 }
 
-QJsonObject JSON_Handler::ReadGesture(QString groupName, QString gestureName) {
-    return this->root_obj[groupName].toObject()[gestureName].toObject();
+//QJsonObject JSON_Handler::ReadGesture(QString groupName, QString gestureName) {
+//    return this->root_obj[groupName].toObject()[gestureName].toObject();
+//}
+
+QJsonArray JSON_Handler::ReadGesture(QString groupName, QString gestureName) {
+    qDebug() << "groupName:" << groupName << " gestureName:" << gestureName << this->root_obj[groupName].toObject()[gestureName];
+    return this->root_obj[groupName].toObject()[gestureName].toArray();
 }
 
-void JSON_Handler::ModifyGesture(QString groupName, QString gestureName, QJsonValue data) {
+void JSON_Handler::ModifyGesture(QString groupName, QString gestureName, u8 data[]) {
+    QJsonArray arr;
+    for (int i = 0; i <MOTOR_NUM; i++) {
+        arr.append(data[i]);
+    }
     QJsonObject obj = this->root_obj[groupName].toObject();
-    obj.insert(gestureName, data);
+    obj.insert(gestureName, arr);
     this->root_obj.insert(groupName, obj);
 }

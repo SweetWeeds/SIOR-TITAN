@@ -27,6 +27,7 @@ Q_OBJECT
 private:
     void SendByte(u8 data); // UART Transmit Function
     u8 GetByte(u16 timeout); // UART Receive Function
+    QByteArray MyGetBytes(u16 timeout);
     void run() override;
     QMutex m_mutex;
     QSerialPort m_serialPort;

@@ -54,6 +54,17 @@ u8 MyMotor::GetByte(u16 timeout=TIMEOUT) {
     return buf;
 } // UART Receive Function
 
+QByteArray MyMotor::MyGetBytes(u16 timeout=TIMEOUT) {
+    QByteArray responseData;
+    if (this->m_serialPort.waitForBytesWritten(timeout)) {
+        responseData = this->m_serialPort.readAll();
+        while (this->m_serialPort.waitForReadyRead(timeout) && responseData.size() < 2)
+            responseData += this->m_serialPort.readAll();
+        qDebug() << "responseData[" << responseData.size() << "]: " << responseData;
+    }
+    return responseData;
+}
+
 void MyMotor::run() {
     while (!this->m_quit) {
 
@@ -133,17 +144,11 @@ u16 MyMotor::Quick_PosControl_CMD(u8 SamId, u8 Torq, u8 TargetPos) {
     u16 ResponseData = 0;
     if((SamId <= 30) && (Torq <= 4) && (TargetPos <= 254)) {
         Quick_Ctrl_CMD((Torq << 5) | SamId, TargetPos);
-        ResponseData = GetByte(TIMEOUT) << 8;
-        ResponseData |= GetByte(TIMEOUT);
+        //ResponseData = GetByte(TIMEOUT) << 8;
+        //ResponseData |= GetByte(TIMEOUT);
     }
 
     return ResponseData;
-}
-
-u16 MyMotor::MyQuick_PosControl_CMD(u8 SamId, u8 Torq, u8 TargetPos) {
-    this->Quick_PosControl_CMD(SamId, Torq, TargetPos);
-    this->Quick_PosControl_CMD(SamId, Torq, TargetPos);
-    return this->Quick_PosControl_CMD(SamId, Torq, TargetPos);
 }
 
 /******************************************************************************/
@@ -153,10 +158,16 @@ u16 MyMotor::MyQuick_PosControl_CMD(u8 SamId, u8 Torq, u8 TargetPos) {
 /******************************************************************************/
 u16 MyMotor::Quick_StatusRead_CMD(u8 SamId) {
     u16 ResponseData = 0;
+    QByteArray tmpResponseData;
     if (SamId <= 30) {
         Quick_Ctrl_CMD(0xa0 | SamId, 0);
-        ResponseData = GetByte(TIMEOUT) << 8;
-        ResponseData |= GetByte(TIMEOUT);
+        //ResponseData = GetByte(TIMEOUT) << 8;
+        //ResponseData |= GetByte(TIMEOUT);
+        tmpResponseData = MyGetBytes(TIMEOUT);
+        if (tmpResponseData.size() == 2) {
+            ResponseData = tmpResponseData[0] << 8;
+            ResponseData |= tmpResponseData[1];
+        }
     }
     return ResponseData;
 }

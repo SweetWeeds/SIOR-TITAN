@@ -117,6 +117,11 @@ void MainWindow::on_groupListView_clicked(const QModelIndex &index) {
     this->updateGestureListView(gestureList);
 }
 
+void MainWindow::on_gestureListView_clicked(const QModelIndex &index) {
+    qDebug() << "gesture: " << index.data().toString();
+    this->currentGesture = index.data().toString();
+}
+
 // Add Group
 void MainWindow::on_addGroupButton_clicked() {
     QStringList groupList = this->json_handler.ReadGroupList();
@@ -152,20 +157,36 @@ void MainWindow::on_deleteGestureButton_clicked() {
 
 // Single Execution
 void MainWindow::on_singleExecuteButton_clicked() {
-    qDebug() << this->json_handler.ReadGesture(currentGroup, currentGesture);
+    QJsonArray captured_motion_qj = this->json_handler.ReadGesture(currentGroup, currentGesture);
+    for (int i = 0; i < MOTOR_NUM; i++) {
+        u8 tmp = captured_motion_qj[i].toInt();
+        this->mymotor.Quick_PosControl_CMD((u8)i, 0x04, tmp);
+    }
+    qDebug() << captured_motion_qj;
     // Execute
 }
 
 // Capture
 void MainWindow::on_captureButton_clicked() {
-
+    // Get motion data from motor
+    u8 captured_motion[MOTOR_NUM];
+    for (int i = 0; i < MOTOR_NUM; i++) {
+        captured_motion[i] = (u8)(this->mymotor.Quick_StatusRead_CMD(i) & 0xFF);
+        qDebug() << i << ":" << captured_motion[i];
+    }
+    this->json_handler.ModifyGesture(this->currentGroup, this->currentGesture, captured_motion);
 }
 
 // Batch Execution
 void MainWindow::on_batchExecuteButton_clicked() {
-
+    
 }
 
+void MainWindow::on_setIdButton_clicked() {
+    u8 oldId = ui->oldSamIdSpinBox->value();
+    u8 newId = ui->newSamIdSpinBox->value();
+    this->mymotor.Standard_IdSet_CMD(oldId, newId);
+}
 
 
 /**** End of Slot Functions ****/
@@ -242,6 +263,4 @@ void MainWindow::updateGestureListView(QStringList gestureList) {
     ui->gestureListView->update();
 }
 /**** End of user functions ****/
-
-
 
